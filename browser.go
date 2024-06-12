@@ -23,7 +23,7 @@ func (u *UserAgent) evalBrowserName(ua string) bool {
 	// Blackberry goes first because it reads as MSIE & Safari
 	if strings.Contains(ua, "blackberry") || strings.Contains(ua, "playbook") || strings.Contains(ua, "bb10") || strings.Contains(ua, "rim ") {
 		u.Browser.Name = BrowserBlackberry
-		return u.maybeBot()
+		return u.maybeBot(ua)
 	}
 
 	if strings.Contains(ua, "applewebkit") {
@@ -92,7 +92,7 @@ func (u *UserAgent) evalBrowserName(ua string) bool {
 			goto notwebkit
 
 		}
-		return u.maybeBot()
+		return u.maybeBot(ua)
 	}
 
 notwebkit:
@@ -159,7 +159,7 @@ notwebkit:
 
 	}
 
-	return u.maybeBot()
+	return u.maybeBot(ua)
 }
 
 // Retrieve browser version
