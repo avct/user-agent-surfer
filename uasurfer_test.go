@@ -203,6 +203,9 @@ var testUAVars = []struct {
 	{"UCWEB/2.0 (Java; U; MIDP-2.0; en-US; MicromaxQ5) U2/1.0.0 UCBrowser/9.4.0.342 U2/1.0.0 Mobile",
 		UserAgent{
 			Browser{BrowserUCBrowser, Version{9, 4, 0}}, OS{PlatformUnknown, OSUnknown, Version{0, 0, 0}}, DevicePhone}},
+	{"Mozilla/5.0 (Linux; U; Android 5.1.1; en-US; LG-D722 Build/LMY48Y) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 UCBrowser/12.13.0.718 U3/0.8.0 Mobile Safari/534.30",
+		UserAgent{
+			Browser{BrowserUCBrowser, Version{12, 13, 0}}, OS{PlatformLinux, OSAndroid, Version{5, 1, 1}}, DevicePhone}},
 
 	// Nokia Browser
 	// {"Mozilla/5.0 (Series40; Nokia501/14.0.4/java_runtime_version=Nokia_Asha_1_2; Profile/MIDP-2.1 Configuration/CLDC-1.1) Gecko/20100401 S40OviBrowser/4.0.0.0.45",
