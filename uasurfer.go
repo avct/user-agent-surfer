@@ -5,7 +5,11 @@
 // strings.
 package uasurfer
 
-import "strings"
+import (
+	"strings"
+	"sync"
+	"unsafe"
+)
 
 //go:generate stringer -type=DeviceType,BrowserName,OSName,Platform -output=const_string.go
 
@@ -213,7 +217,13 @@ func ParseUserAgent(ua string, dest *UserAgent) {
 }
 
 func parse(ua string, dest *UserAgent) {
-	ua = normalise(ua)
+	bp := bytesPool.Get().(*[]byte)
+	b := *bp
+
+	b = append(b[:0], ua...)
+	lowercaseBytes(b)
+	ua = b2s(b)
+
 	switch {
 	case len(ua) == 0:
 		dest.OS.Platform = PlatformUnknown
@@ -228,39 +238,44 @@ func parse(ua string, dest *UserAgent) {
 		dest.evalBrowserVersion(ua)
 		dest.evalDevice(ua)
 	}
+
+	*bp = b
+	bytesPool.Put(bp)
 }
 
-// normalise normalises the user supplied agent string so that
-// we can more easily parse it.
-func normalise(ua string) string {
-	if len(ua) <= 1024 {
-		var buf [1024]byte
-		ascii := copyLower(buf[:len(ua)], ua)
-		if !ascii {
-			// Fall back for non ascii characters
-			return strings.ToLower(ua)
-		}
-		return string(buf[:len(ua)])
-	}
-	// Fallback for unusually long strings
-	return strings.ToLower(ua)
+// b2s converts a byte slice to a string without allocating.
+// WARNING: changing the byte slice will change the string as well!
+func b2s(b []byte) string {
+	return *(*string)(unsafe.Pointer(&b))
 }
 
-// copyLower copies a lowercase version of s to b. It assumes s contains only single byte characters
-// and will panic if b is nil or is not long enough to contain all the bytes from s.
-// It returns early with false if any characters were non ascii.
-func copyLower(b []byte, s string) bool {
-	for j := 0; j < len(s); j++ {
-		c := s[j]
-		if c > 127 {
-			return false
-		}
+const toLower = 'a' - 'A'
 
-		if 'A' <= c && c <= 'Z' {
-			c += 'a' - 'A'
-		}
-
-		b[j] = c
+var (
+	bytesPool = sync.Pool{
+		New: func() interface{} {
+			b := make([]byte, 0, 1024)
+			return &b
+		},
 	}
-	return true
+
+	toLowerTable = func() [256]byte {
+		var a [256]byte
+		for i := 0; i < 256; i++ {
+			c := byte(i)
+			if c >= 'A' && c <= 'Z' {
+				c += toLower
+			}
+			a[i] = c
+		}
+		return a
+	}()
+)
+
+// Lowercase all ascii characters in b.
+func lowercaseBytes(b []byte) {
+	for i := 0; i < len(b); i++ {
+		p := &b[i]
+		*p = toLowerTable[*p]
+	}
 }
