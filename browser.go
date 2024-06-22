@@ -40,7 +40,7 @@ func (u *UserAgent) evalBrowserName(ua string) bool {
 		case strings.Contains(ua, "silk/"):
 			u.Browser.Name = BrowserSilk
 
-		case strings.Contains(ua, "edg/") || strings.Contains(ua, "edgios/") || strings.Contains(ua, "edga/")|| strings.Contains(ua, "edge/") || strings.Contains(ua, "iemobile/") || strings.Contains(ua, "msie "):
+		case strings.Contains(ua, "edg/") || strings.Contains(ua, "edgios/") || strings.Contains(ua, "edga/") || strings.Contains(ua, "edge/") || strings.Contains(ua, "iemobile/") || strings.Contains(ua, "msie "):
 			u.Browser.Name = BrowserIE
 
 		case strings.Contains(ua, "ucbrowser/") || strings.Contains(ua, "ucweb/"):
@@ -51,6 +51,9 @@ func (u *UserAgent) evalBrowserName(ua string) bool {
 
 		case strings.Contains(ua, "samsungbrowser/"):
 			u.Browser.Name = BrowserSamsung
+
+		case strings.Contains(ua, "nokiabrowser/"):
+			u.Browser.Name = BrowserNokia
 
 		case strings.Contains(ua, "coc_coc_browser/"):
 			u.Browser.Name = BrowserCocCoc
@@ -215,6 +218,9 @@ func (u *UserAgent) evalBrowserVersion(ua string) {
 
 	case BrowserSilk:
 		_ = u.Browser.Version.findVersionNumber(ua, "silk/")
+
+	case BrowserNokia:
+		_ = u.Browser.Version.findVersionNumber(ua, "nokiabrowser/")
 
 	case BrowserSpotify:
 		_ = u.Browser.Version.findVersionNumber(ua, "spotify/")
