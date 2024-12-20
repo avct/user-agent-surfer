@@ -4,6 +4,19 @@ import (
 	"strings"
 )
 
+// Return all valid device types
+func GetDeviceTypes() []string {
+	return []string{
+		"DeviceComputer",
+		"DevicePhone",
+		"DeviceTablet",
+		"DeviceTV",
+		"DeviceConsole",
+		"DeviceWearable",
+		"DeviceUnknown",
+	}
+}
+
 func (u *UserAgent) evalDevice(ua string) {
 	switch {
 

@@ -18,6 +18,28 @@ import (
 // 		}
 // }
 
+// Return all valid browser names
+func GetBrowserNames() []string {
+	return []string{
+		"BrowserChrome",
+		"BrowserSafari",
+		"BrowserIE",
+		"BrowserFirefox",
+		"BrowserAndroid",
+		"BrowserOpera",
+		"BrowserUCBrowser",
+		"BrowserSilk",
+		"BrowserQQ",
+		"BrowserSpotify",
+		"BrowserBlackberry",
+		"BrowserYandex",
+		"BrowserNintendo",
+		"BrowserSamsung",
+		"BrowserCocCoc",
+		"BrowserUnknown",
+	}
+}
+
 // Retrieve browser name from UA strings
 func (u *UserAgent) evalBrowserName(ua string) bool {
 	// Blackberry goes first because it reads as MSIE & Safari

@@ -10,6 +10,41 @@ var (
 	amazonFireFingerprint = regexp.MustCompile("\\s(k[a-z]{3,5}|sd\\d{4}ur)\\s") //tablet or phone
 )
 
+// Return all valid OS names
+func GetOSNames() []string {
+	return []string{
+		"OSWindows",
+		"OSMacOSX",
+		"OSiOS",
+		"OSAndroid",
+		"OSChromeOS",
+		"OSWebOS",
+		"OSLinux",
+		"OSPlaystation",
+		"OSXbox",
+		"OSNintendo",
+		"OSUnknown",
+	}
+}
+
+// Return all valid OS platform names
+func GetOSPlatformNames() []string {
+	return []string{
+		"PlatformWindows",
+		"PlatformMac",
+		"PlatformLinux",
+		"PlatformiPad",
+		"PlatformiPhone",
+		"PlatformBlackberry",
+		"PlatformWindowsPhone",
+		"PlatformKindle",
+		"PlatformPlaystation",
+		"PlatformXbox",
+		"PlatformNintendo",
+		"PlatformUnknown",
+	}
+}
+
 func (u *UserAgent) evalOS(ua string) bool {
 	s := strings.IndexRune(ua, '(')
 	e := strings.IndexRune(ua, ')')
